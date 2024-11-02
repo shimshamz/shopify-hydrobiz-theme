@@ -1,0 +1,128 @@
+{% if section.settings.active %}
+  <div id="age-verification-popup" class="tw-opacity-0 tw-pointer-events-none tw-overflow-hidden tw-fixed tw-inset-0 tw-bg-slate-900 tw-bg-opacity-60 tw-backdrop-blur-sm tw-z-10 tw-transition-all">
+    <div class="tw-bg-white tw-p-8 tw-absolute tw-top-[calc(50%-60px)] tw-left-1/2 -tw-translate-x-1/2 -tw-translate-y-1/2 tw-max-w-full tw-rounded-md tw-shadow-3xl tw-drop-shadow-lg">
+      <div class="tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-center tw-gap-8">
+        {%- if section.settings.logo != blank -%}
+          {%- capture image_size -%}{{ section.settings.logo_max_width | plus: 300 }}x{%- endcapture -%}
+          {% assign height = section.settings.logo_max_width | divided_by: section.settings.logo.aspect_ratio %}
+          <img class=""
+               width="{{ section.settings.logo_max_width }}"
+               height="{{ height }}"
+               src="{{ section.settings.logo | img_url: image_size }}"
+               srcset="{{ section.settings.logo | img_url: image_size }} 1x, {{ section.settings.logo | img_url: image_size, scale: 2 }} 2x"
+               alt="{{ section.settings.logo.alt | default: shop.name | escape }}">
+        {%- endif -%}
+        <div class="tw-max-w-[400px]">
+          <h1 class="tw-text-3xl tw-font-bold tw-mb-2">{{ section.settings.title }}</h1>
+          <p>{{ section.settings.paragraph }}</p>
+        </div>
+        <div class="tw-flex tw-align-center tw-gap-8 tw-justify-center">
+          <button type="button" id="age-verification-agree-button" class="button button--primary">Agree</button>
+          <button type="button" id="age-verification-disagree-button" class="button button--secondary">Disagree</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+
+      const body = document.body
+      const popup = document.getElementById('age-verification-popup')
+      const agreeButton = document.getElementById('age-verification-agree-button')
+      const disagreeButton = document.getElementById('age-verification-disagree-button')
+
+      function setCookie(cookieName, cookieValue, cookieExpiryDays) {
+        const date = new Date();
+        date.setTime(date.getTime() + (cookieExpiryDays * 24 * 60 * 60 * 1000));
+        let expires = "expires="+date.toUTCString();
+        document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
+      }
+
+      function getCookie(cookieName) {
+        let name = cookieName + "=";
+        let ca = document.cookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+          let c = ca[i];
+          while (c.charAt(0) === ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) === 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return "";
+      }
+
+      function showPopup() {
+        body.classList.add("tw-overflow-hidden", "tw-fixed", "tw-w-screen", "tw-h-screen")
+        popup.classList.remove("tw-opacity-0","tw-pointer-events-none")
+      }
+
+      function hidePopup() {
+        body.classList.remove("tw-overflow-hidden", "tw-fixed", "tw-w-screen", "tw-h-screen")
+        popup.classList.add("tw-opacity-0","tw-pointer-events-none")
+      }
+
+      const alreadyVerified = getCookie("ageVerification")
+      if (!alreadyVerified) {
+        showPopup()
+      }
+
+      agreeButton.addEventListener('click', (e) => {
+        hidePopup();
+        setCookie("ageVerification", "verified", 30)
+      })
+      disagreeButton.addEventListener('click', (e) => {
+        window.location.href = "https://www.google.com/"
+      })
+
+    })()
+  </script>
+
+{% endif %}
+
+<script type="application/json">
+{% schema %}
+{
+  "name": "Age Verification",
+  "settings": [
+   {
+     "type": "checkbox",
+     "id": "active",
+     "label": "Show Age Verification",
+     "default": true
+   },
+   {
+     "type": "image_picker",
+     "id": "logo",
+     "label": "Logo"
+   },
+   {
+     "type": "range",
+     "id": "logo_max_width",
+     "min": 50,
+     "max": 300,
+     "step": 5,
+     "unit": "px",
+     "label": "Logo image width",
+     "default": 140
+   },
+   {
+     "type": "text",
+     "id": "title",
+     "label": "Title",
+     "default": "Welcome"
+   },
+   {
+     "type": "textarea",
+     "id": "paragraph",
+     "label": "Paragraph",
+     "default": "Please verify that you are 18 years of age or older to enter this site."
+   }
+  ]
+}
+{% endschema %}
+
+</script>
+

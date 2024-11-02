@@ -1,0 +1,98 @@
+{%- if section.settings.desktop_navigation_layout == 'condensed' -%}
+  {%- assign is_condensed = true -%}
+{%- else -%}
+  {%- assign is_condensed = false -%}
+{%- endif -%}
+
+{%- assign downcase_title = mega_menu.title | downcase | strip -%}
+
+
+<div id="{{ index }}"
+     class="mega-menu {% if is_floating %}mega-menu--floating{% endif %}"
+     data-type="menu"
+     aria-hidden="true"
+     role="list" {{ mega_menu_block.shopify_attributes }}>
+  {%- capture mega_menu_inner -%}
+    {% assign image_count = 0 %}
+    {% if mega_menu_block.settings.image_1 != blank %}{% assign image_count = image_count | plus: 1 %}{% endif %}
+    {% if mega_menu_block.settings.image_2 != blank %}{% assign image_count = image_count | plus: 1 %}{% endif %}
+    {% if mega_menu_block.settings.image_3 != blank %}{% assign image_count = image_count | plus: 1 %}{% endif %}
+    {% if mega_menu_block.settings.image_4 != blank %}{% assign image_count = image_count | plus: 1 %}{% endif %}
+
+
+    <div class="mega-menu__inner !tw-min-h-[410px] tw-gap-4 tw-justify-between {{ mega_menu_classes }}">
+      {%- if mega_menu_block.settings.image_1 != blank -%}
+        <a href="{{ mega_menu_block.settings.image_1_link | default: '#' }}" class="tw-group mega-menu__promo !tw-mx-0">
+          <div class="mega-menu__image-wrapper group-hfa:tw-shadow-xl">
+            <div class="aspect-ratio"
+                 style="padding-bottom: {{ 100.0 | divided_by: mega_menu_block.settings.image_1.aspect_ratio }}%">
+              <img class="lazyload image--fade-in"
+                   data-src="{{ mega_menu_block.settings.image_1 | img_url: '550x' }}"
+                   alt="{{ mega_menu_block.settings.image_1.alt | escape }}">
+            </div>
+          </div>
+
+          <span class="mega-menu__image-heading tw-text-left tw-font-medium tw-text-slate-400 tw-text-base">{{ mega_menu_block.settings.image_1_heading | escape }}</span>
+          <p class="mega-menu__image-text">{{ mega_menu_block.settings.image_1_text | escape }}</p>
+        </a>
+      {%- endif -%}
+
+      {%- if mega_menu_block.settings.image_2 != blank -%}
+        <a href="{{ mega_menu_block.settings.image_2_link | default: '#' }}" class="tw-group mega-menu__promo !tw-mx-0">
+          <div class="mega-menu__image-wrapper group-hfa:tw-shadow-xl">
+            <div class="aspect-ratio"
+                 style="padding-bottom: {{ 100.0 | divided_by: mega_menu_block.settings.image_2.aspect_ratio }}%">
+              <img class="lazyload image--fade-in"
+                   data-src="{{ mega_menu_block.settings.image_2 | img_url: '550x' }}"
+                   alt="{{ mega_menu_block.settings.image_2.alt | escape }}">
+            </div>
+          </div>
+
+          <span class="mega-menu__image-heading tw-text-left tw-font-medium tw-text-slate-400 tw-text-base">{{ mega_menu_block.settings.image_2_heading | escape }}</span>
+          <p class="mega-menu__image-text">{{ mega_menu_block.settings.image_2_text | escape }}</p>
+        </a>
+      {%- endif -%}
+
+      {%- if mega_menu_block.settings.image_3 != blank -%}
+        <a href="{{ mega_menu_block.settings.image_3_link | default: '#' }}" class="tw-group mega-menu__promo !tw-mx-0">
+          <div class="mega-menu__image-wrapper group-hfa:tw-shadow-xl">
+            <div class="aspect-ratio"
+                 style="padding-bottom: {{ 100.0 | divided_by: mega_menu_block.settings.image_3.aspect_ratio }}%">
+              <img class="lazyload image--fade-in"
+                   data-src="{{ mega_menu_block.settings.image_3 | img_url: '550x' }}"
+                   alt="{{ mega_menu_block.settings.image_3.alt | escape }}">
+            </div>
+          </div>
+
+          <span class="mega-menu__image-heading tw-text-left tw-font-medium tw-text-slate-400 tw-text-base">{{ mega_menu_block.settings.image_3_heading | escape }}</span>
+          <p class="mega-menu__image-text">{{ mega_menu_block.settings.image_3_text | escape }}</p>
+        </a>
+      {%- endif -%}
+
+      {%- if mega_menu_block.settings.image_4 != blank -%}
+        <a href="{{ mega_menu_block.settings.image_4_link | default: '#' }}" class="tw-group mega-menu__promo !tw-mx-0">
+          <div class="mega-menu__image-wrapper group-hfa:tw-shadow-xl">
+            <div class="aspect-ratio"
+                 style="padding-bottom: {{ 100.0 | divided_by: mega_menu_block.settings.image_4.aspect_ratio }}%">
+              <img class="lazyload image--fade-in"
+                   data-src="{{ mega_menu_block.settings.image_4 | img_url: '550x' }}"
+                   alt="{{ mega_menu_block.settings.image_4.alt | escape }}">
+            </div>
+          </div>
+
+          <span class="mega-menu__image-heading tw-text-left tw-font-medium tw-text-slate-400 tw-text-base">{{ mega_menu_block.settings.image_4_heading | escape }}</span>
+          <p class="mega-menu__image-text">{{ mega_menu_block.settings.image_4_text | escape }}</p>
+        </a>
+      {%- endif -%}
+    </div>
+  {%- endcapture -%}
+
+  {%- if is_condensed -%}
+    {{- mega_menu_inner -}}
+  {%- else -%}
+    <div class="container">
+      {{- mega_menu_inner -}}
+    </div>
+  {%- endif -%}
+</div>
+

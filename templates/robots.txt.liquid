@@ -1,0 +1,27 @@
+# we use Shopify as our ecommerce platform
+<!-- Liquid for default rules -->
+
+{%- if group.user_agent.value == '*' -%}
+{{ 'Disallow: /collections/vendors*' }}
+{%- endif -%}
+
+
+<!-- Liquid for default rules -->
+
+Sitemap: [sitemap-url]
+
+
+{%- comment -%}
+# Caution! Please read https://help.shopify.com/en/manual/promoting-marketing/seo/editing-robots-txt before proceeding to make changes to this file.
+{% endcomment %}
+{% for group in robots.default_groups %}
+  {{- group.user_agent -}}
+
+  {% for rule in group.rules %}
+    {{- rule -}}
+  {% endfor %}
+
+  {%- if group.sitemap != blank -%}
+    {{ group.sitemap }}
+  {%- endif -%}
+{% endfor %}
