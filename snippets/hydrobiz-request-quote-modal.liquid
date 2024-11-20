@@ -1,0 +1,226 @@
+<div id="hydrobiz-request-quote-modal">
+  <div class="modal-header">
+    <h4 class="heading h3">{{ 'Request a quote' | escape }}</h4>
+    <button class="close-button" onclick="hideModal()">
+      {%- render 'icon', icon: 'close' -%}
+    </button>
+  </div>
+
+  <div class="modal-body">
+    {%- form 'contact', class: 'request-quote-form' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="alert alert--success">{{ 'contact.form.successfully_sent' | t }}</p>
+      {%- endif -%}
+
+      {%- if form.errors -%}
+        <div class="alert alert--error" id="contact-form-error">
+          <ul class="alert__error-list" role="list">
+            {%- for field in form.errors -%}
+              {%- if field == 'form' -%}
+                <li class="alert__error-item">{{ form.errors.messages[field] }}</li>
+              {%- else -%}
+                <li class="alert__error-item">
+                  {{ form.errors.translated_fields[field] | capitalize }}
+                  {{ form.errors.messages[field] }}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      <div class="form__input-row">
+        <div class="form__input-wrapper form__input-wrapper--labelled">
+          <input
+            id="contact-form-name"
+            type="text"
+            class="form__field form__field--text {% if customer.name != blank %}is-filled{% endif %}"
+            name="contact[name]"
+            aria-label="{{ 'contact.form.name' | t }}"
+            required
+            {% if customer %}
+              value="{{ customer.name }}"
+            {% endif %}
+          >
+          <label for="contact-form-name" class="form__floating-label">{{ 'contact.form.name' | t }}</label>
+        </div>
+
+        <div class="form__input-wrapper form__input-wrapper--labelled">
+          <input
+            id="contact-form-surname"
+            type="text"
+            class="form__field form__field--text"
+            name="contact[surname]"
+            aria-label="Surname"
+          >
+          <label for="contact-form-surname" class="form__floating-label">{{ 'Surname' }}</label>
+        </div>
+      </div>
+
+      <div class="form__input-wrapper form__input-wrapper--labelled">
+        <input
+          id="contact-form-email"
+          type="email"
+          class="form__field form__field--text {% if customer.email != blank %}is-filled{% endif %}"
+          name="contact[email]"
+          aria-label="{{ 'contact.form.email' | t }}"
+          required
+          {% if customer %}
+            value="{{ customer.email }}"
+          {% endif %}
+          {% if form.errors contains 'email' %}
+            aria-invalid="true" aria-describedby="contact-form-error"
+          {% endif %}
+        >
+        <label for="contact-form-email" class="form__floating-label">{{ 'contact.form.email' | t }}</label>
+      </div>
+
+      <div class="form__input-wrapper form__input-wrapper--labelled">
+        <input
+          id="contact-form-phone"
+          name="contact[phone]"
+          required=""
+          type="tel"
+          class="form__field form__field--text"
+          aria-required="false"
+          aria-label="Phone"
+        >
+        <label for="contact-form-phone" class="form__floating-label">Phone</label>
+      </div>
+
+      <div class="form__input-wrapper form__input-wrapper--labelled">
+        <textarea
+          id="contact-form-message"
+          name="contact[body]"
+          rows="4"
+          class="form__field form__field--textarea"
+          aria-label="{{ 'contact.form.message' | t }}"
+          required
+        ></textarea>
+        <label for="contact-form-message" class="form__floating-label">{{ 'contact.form.message' | t }}</label>
+      </div>
+
+      <input type="text" name="contact[type]" value="Request for Quote" class="hidden" />
+      <input type="text" name="contact[product]" value="{{ product.title }}" id="product-input" class="hidden" />
+
+      <button
+        type="submit"
+        class="form__submit {% unless section.settings.show_store_info %}form__submit--centered{% endunless %} button button--primary button--min-width"
+      >
+        {{ 'contact.form.submit' | t }}
+      </button>
+    {% endform %}
+  </div>
+</div>
+<div id="hydrobiz-request-quote-modal-overlay"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const mainElement = document.getElementById('main');
+    mainElement.addEventListener('click', (e) => {
+      if (e.target.classList.contains('request-quote-button')) {
+        e.preventDefault();
+        const productTitle = e.target.dataset.productTitle;
+        showModal(productTitle);
+      }
+    });
+  });
+  function showModal(productTitle) {
+    const html = document.querySelector('html');
+    const productInput = document.querySelector('#product-input');
+    html.classList.add('modal-open');
+    console.log(productInput);
+    productInput.value = productTitle;
+  }
+  function hideModal() {
+    const html = document.querySelector('html');
+    const productInput = document.querySelector('#product-input');
+    html.classList.remove('modal-open');
+    productInput.value = '';
+  }
+</script>
+
+{% style %}
+  body {
+    position: relative;
+  }
+
+  html.modal-open {
+    overflow: hidden;
+  }
+
+  .modal-open #hydrobiz-request-quote-modal {
+    display: flex;
+  }
+
+  .modal-open #hydrobiz-request-quote-modal-overlay {
+    display: block;
+  }
+
+  #hydrobiz-request-quote-modal {
+    display: none;
+    flex-direction: column;
+    width: 90%;
+    max-height: 95%;
+    padding-top: 50px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 20;
+    transform: translate(-50%, -50%);
+    background-color: {{ settings.background }};
+    overflow: hidden;
+  }
+
+  #hydrobiz-request-quote-modal .modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .modal-header .heading {
+    margin: 0;
+  }
+
+  #hydrobiz-request-quote-modal .close-button {
+    display: block;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: calc(0% + 10px);
+  }
+
+  #hydrobiz-request-quote-modal .modal-body {
+    width: 100%;
+    height: 100%;
+    padding: 20px 10px 20px;
+    overflow: auto;
+  }
+
+  #hydrobiz-request-quote-modal-overlay {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 10;
+  }
+
+  input.hidden {
+    display: none;
+  }
+
+  @media screen and (max-width: 420px) {
+    .request-quote-button.button--small {
+      min-height: 42px;
+      line-height: normal;
+    }
+  }
+{% endstyle %}

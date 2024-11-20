@@ -157,7 +157,12 @@
   <input type="hidden" name="id" data-sku="{{ selected_variant.sku }}" value="{{ selected_variant.id }}">
 {%- endunless -%}
 
-<div class="product-form__info-list">
+<div class="product-form__info-list"
+  {%- unless product.selected_or_first_available_variant.available -%}
+     {%- comment -%} At page load, don't display price and quantity selector if selected variant or first available variant is not available {%- endcomment -%}
+    {{ "style='display: none;'" }}
+  {%- endunless -%} 
+  >
   <div class="product-form__info-item">
     <span class="product-form__info-title text--strong">{{ 'product.form.price' | t }}:</span>
 
