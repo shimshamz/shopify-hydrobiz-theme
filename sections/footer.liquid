@@ -225,6 +225,23 @@
 
         </div>
 
+        {%- comment -%} Hydrobiz Payment logos on the homepage {%- endcomment -%}
+        {%- if request.page_type == 'index' -%}
+          <div class="footer__aside-item footer__aside-item--payment-logos">
+            <img src="{{ 'payment-logos.svg' | asset_url }}">
+          </div>
+
+          {% style %}
+            @media screen and (min-width: 1000px) {
+              .footer__aside-item--payment-logos {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+              }
+            }
+          {% endstyle %}
+        {%- endif -%}
+
         {%- if section.settings.show_social_media -%}
           {%- capture social_media -%}{% render 'social-media', show_social_media_name: false %}{%- endcapture -%}
 
