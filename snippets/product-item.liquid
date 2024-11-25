@@ -77,7 +77,7 @@
   <div class="product-item__info">
     <div class="product-item__info-inner">
       {%- capture price_list -%}
-      {%- comment -%} if no variants available, don't display price {%- endcomment -%}
+        {%- comment -%} if no variants available, don't display price {%- endcomment -%}
         {%- if product.available -%}
           <div data-spark="b2c-only" class="product-item__price-list price-list">
             {%- if product.price < product.compare_at_price -%}
@@ -89,15 +89,15 @@
                   {%- if product.selected_or_first_available_variant.taxable -%}{%- capture price_min -%}{{ product.price_min | times: 1.15 | money }}{%- endcapture -%}{%- else -%}{%- capture price_min -%}{{ product.price_min | money }}{%- endcapture -%}{% endif %}
                   {%- if product.selected_or_first_available_variant.taxable -%}{%- capture price_max -%}{{ product.price_max | times: 1.15 | money }}{%- endcapture -%}{%- else -%}{%- capture price_max -%}{{ product.price_max | money }}{%- endcapture -%}{% endif %}
                 {%- endif -%}
-
+  
                 <span class="price price--highlight">
                   <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
                   {{- 'collection.product.from_price_html' | t: price_min: price_min, price_max: price_max -}}
                 </span>
-
+  
                 <span class="price price--compare">
                   <span class="visually-hidden">{{ 'product.general.regular_price' | t }}</span>
-
+  
                   {%- if settings.currency_code_enabled -%}
                     {%- if product.selected_or_first_available_variant.taxable -%}{{ product.compare_at_price_min | times: 1.15 | money_with_currency }}{%- else -%}{{ product.compare_at_price_min | money_with_currency }}{% endif %}
                   {%- else -%}
@@ -107,14 +107,14 @@
               {%- else -%}
                 <span class="price price--highlight">
                   <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
-
+  
                   {%- if settings.currency_code_enabled -%}
                     {%- if product.selected_or_first_available_variant.taxable -%}{{ product.price | times: 1.15 | money_with_currency }}{%- else -%}{{ product.price | money_with_currency }}{% endif %}
                   {%- else -%}
                     {%- if product.selected_or_first_available_variant.taxable -%}{{ product.price | times: 1.15 | money }}{%- else -%}{{ product.price | money }}{% endif %}
                   {%- endif -%}
                 </span>
-
+  
                 <span class="price price--compare">
                   <span class="visually-hidden">{{ 'product.general.regular_price' | t }}</span>
                   {%- if settings.currency_code_enabled -%}
@@ -132,7 +132,7 @@
                 {%- if product.selected_or_first_available_variant.taxable -%}{%- capture price_min -%}{{ product.price_min | times: 1.15 | money }}{%- endcapture -%}{%- else -%}{%- capture price_min -%}{{ product.price_min | money }}{%- endcapture -%}{% endif %}
                 {%- if product.selected_or_first_available_variant.taxable -%}{%- capture price_max -%}{{ product.price_max | times: 1.15 | money }}{%- endcapture -%}{%- else -%}{%- capture price_max -%}{{ product.price_max | money }}{%- endcapture -%}{% endif %}
               {%- endif -%}
-
+  
               <span class="price">
                 <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
                 {{- 'collection.product.from_price_html' | t: price_min: price_min, price_max: price_max -}}
@@ -148,17 +148,17 @@
               </span>
             {%- endif -%}
           </div>
-
+  
           {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
             <div data-spark="b2c-only" class="product-item__price-info">
               <div class="unit-price-measurement">
                 <span class="unit-price-measurement__price">{%- if product.selected_or_first_available_variant.taxable -%}{{ product.selected_or_first_available_variant.unit_price | times: 1.15 | money }}{%- else -%}{{ product.selected_or_first_available_variant.unit_price | money }}{% endif %}</span>
                 <span class="unit-price-measurement__separator">/ </span>
-
+  
                 {%- if product.selected_or_first_available_variant.unit_price_measurement.reference_value != 1 -%}
                   <span class="unit-price-measurement__reference-value">{{ product.selected_or_first_available_variant.unit_price_measurement.reference_value }}</span>
                 {%- endif -%}
-
+  
                 <span class="unit-price-measurement__reference-unit">{{ product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}</span>
               </div>
             </div>

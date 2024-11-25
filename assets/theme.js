@@ -3487,7 +3487,7 @@
             // addToCartButtonElement.classList.remove('button--primary');
             addToCartButtonElement.removeAttribute('data-action');
             // addToCartButtonElement.innerHTML = window.languages.productFormSoldOut;
-            
+
             addToCartButtonElement.removeAttribute('disabled');
             addToCartButtonElement.classList.remove('button--disabled');
             addToCartButtonElement.classList.add('button--primary', 'request-quote-button');
