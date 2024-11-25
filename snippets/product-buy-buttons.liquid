@@ -7,23 +7,24 @@
         <button type="submit" class="product-form__add-button button button--primary" data-action="add-to-cart">{{ 'product.form.add_to_cart' | t }}</button>
       {%- endif -%}
     {%- else -%}
-      {% comment %}
       <button type="submit" class="product-form__add-button button button--disabled" disabled>{{ 'product.form.sold_out' | t }}</button>
-      {% endcomment %}
-      <button
-        class="product-form__add-button button button--primary request-quote-button"
-        data-action="open-request-quote-modal"
-        data-product-title="{{ product.title }}"
-      >
-        {{ 'Request a Quote' }}
-      </button>
     {%- endif -%}
 
     {%- if block.settings.show_payment_button and product.template_suffix != 'pre-order' -%}
       {{ form | payment_button }}
     {%- endif -%}
   {%- else -%}
+    {%- comment -%} Show Request a Quote button only for products that have contact template assigned 
     <a href="/pages/contact" class="button button--primary">{{ 'product.form.contact_us' | t }}</a>
+    {%- endcomment -%}
+
+    <button
+      class="product-form__add-button button button--primary request-quote-button"
+      data-action="open-request-quote-modal"
+      data-product-title="{{ product.title }}"
+    >
+      {{ 'Request a Quote' }}
+    </button>
   {%- endif -%}
 
   {%- if block.settings.show_payment_button and product.selected_or_first_available_variant.available == false -%}
