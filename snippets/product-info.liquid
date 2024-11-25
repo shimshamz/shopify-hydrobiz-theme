@@ -215,6 +215,7 @@
   <script type="application/json" data-product-json>
     {
       "product": {{ productJSON }},
+      "template": {{ product.template_suffix | json }},
       "options_with_values": {{ product_options_with_values }},
       "selected_variant_id": {{ selected_variant.id }}
       {%- if section.settings.show_inventory_quantity -%}
