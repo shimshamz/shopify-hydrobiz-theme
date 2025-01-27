@@ -77,8 +77,8 @@
   <div class="product-item__info">
     <div class="product-item__info-inner">
       {%- capture price_list -%}
-        {%- comment -%} if no variants available, don't display price {%- endcomment -%}
-        {%- if product.available -%}
+        {%- comment -%} if no variants available or template is 'contact', don't display price {%- endcomment -%}
+        {%- if product.available and product.template_suffix != 'contact' -%}
           <div data-spark="b2c-only" class="product-item__price-list price-list">
             {%- if product.price < product.compare_at_price -%}
               {%- if product.price_varies -%}

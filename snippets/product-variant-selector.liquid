@@ -158,10 +158,10 @@
 {%- endunless -%}
 
 <div class="product-form__info-list"
-  {%- unless product.selected_or_first_available_variant.available -%}
+  {%- if product.template_suffix == 'contact' -%}
      {%- comment -%} At page load, don't display price and quantity selector if selected variant or first available variant is not available {%- endcomment -%}
     {{ "style='display: none;'" }}
-  {%- endunless -%} 
+  {%- endif -%} 
   >
   <div class="product-form__info-item">
     <span class="product-form__info-title text--strong">{{ 'product.form.price' | t }}:</span>
